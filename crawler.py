@@ -21,10 +21,15 @@ def cralwer(page):
 
 all_data = pd.DataFrame()   # 建立空白的資料表，再循環加入每一頁的資料
 
-for p in tqdm(range(1, 3)):  
+for p in tqdm(range(1, 3)):
     # range是頁面範圍，請自行修改頁面範圍，程式中斷時也可從修改頁面從中斷的頁面開始
     all_data = all_data.append(cralwer(p), ignore_index=True)
 
 # %%
-# 資料輸出
+# 清除格式錯誤的資料
+# 根據觀察，格式錯誤的資料行中，建坪欄位都不包含'坪'這個字符，所以以此為篩選條件
+mask = all_data['建坪'].str.contains('坪')
+all_data = all_data.loc[mask]
+
+# 輸出
 all_data.to_excel('all_data.xlsx')
